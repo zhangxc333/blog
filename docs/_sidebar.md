@@ -1,9 +1,10 @@
-  * 序章
-    * [mall架构及功能概览](foreword/mall_foreword_01.md)
-    * [mall学习所需知识点](foreword/mall_foreword_02.md)
-  * 架构篇
-    * [mall整合SpringBoot+MyBatis搭建基本骨架](architect/mall_arch_01.md)
-    * [mall整合Swagger-UI实现在线API文档](architect/mall_arch_02.md)
-    * [myfirst](article/相关注解@Component.md)
-    * [second](article/springboot-crud-restful.md)
+  * Java基础
+    * 
+  * Java框架
+    * 
 
+* linux相关
+  * [linux防火墙使用](article/linux防火墙使用.md)
+  * [linu虚拟机固定ip](article/linu虚拟机固定ip.md)
+  * [docker安装及使用](article/docker安装及使用.md)
+  * [redis集群部署](article/redis集群部署.md)
