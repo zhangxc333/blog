@@ -10,10 +10,25 @@
 yum -y update
 ```
 
+* 修改yum源（aliyun）
+
+```shell
+https://mirrors.aliyun.com/repo/Centos-7.repo
+```
+
+放在/etc/yum.repos.d/目录中，并改名为CentOS-Base.repo
+
+```shell
+yum clean all
+yum makecache
+```
+
 * 安装docker
 
 ```shell
 yum -y install docker
+# 其他常用工具
+yum -y install tree net-tools wget
 ```
 
 * 修改国内下载镜像（DaoCloud）

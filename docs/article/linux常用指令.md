@@ -1,4 +1,4 @@
-# linux防火墙使用
+# linux常用指令
 
 ## 1、防火墙状态
 
@@ -36,7 +36,7 @@ systemctl is-enabled firewalld
 开启端口
 
 ```shell
-firewall-cmd --permanent --add-port=8080/tcp
+firewall-cmd --zone=public --permanent --add-port=8080/tcp
 ```
 
 重载防火墙
@@ -61,5 +61,15 @@ firewall-cmd --permanent --list-ports
 
 ```shell
 firewall-cmd --permanent --list-services
+```
+
+
+
+## 3、端口情况
+
+查看端口监听情况
+
+```shell
+netstat -anp
 ```
 
