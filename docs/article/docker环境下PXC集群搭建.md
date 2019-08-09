@@ -47,7 +47,7 @@ docker run -d \
   -e CLUSTER_NAME=cluster1 \
   -e CLUSTER_JOIN=node1 \
   -p 3307:3306 \ # 对外开发端口，这里官方文档没有提及
-  # -v v1:/var/lib/mysql 映射数据卷
+  # -v v2:/var/lib/mysql 映射数据卷
   --name=node2 \
   --net=pxc-network \
   percona/percona-xtradb-cluster:5.7
@@ -61,7 +61,7 @@ docker run -d \
   -e CLUSTER_NAME=cluster1 \
   -e CLUSTER_JOIN=node1 \
   -p 3308:3306 \ # 对外开发端口，这里官方文档没有提及
-  # -v v1:/var/lib/mysql 映射数据卷
+  # -v v3:/var/lib/mysql 映射数据卷
   --name=node3 \
   --net=pxc-network \
   percona/percona-xtradb-cluster:5.7

@@ -32,7 +32,7 @@ $ make
 * 新建相编译出可执行文件 redis-server ， 并将文件复制到 cluster-test 文件夹行文件
 
 ```shell
-# 这里我习惯在/etc目录下进行（/etc目录用于存放配置文件）
+# 这里配置文件直接存放在/usr/redis-5.0.4/目录下（/etc目录用于存放配置文件）
 mkdir cluster-test
 cd cluster-test
 mkdir 7000 7001 7002 7003 7004 7005
@@ -59,7 +59,7 @@ daemonize yes
 
 ```shell
 # 如果你在src目录下没找到redis-server，也表明第一步安装失败
-cp /usr/redis-5.0.4/src/redis-server /etc/cluster-test
+cp /usr/redis-5.0.4/src/redis-server  /usr/redis-5.0.4/cluster-test
 ```
 
 * 使用类似以下命令， 在每个标签页中打开一个实例：
@@ -165,6 +165,27 @@ $ 127.0.0.1:7004> cluster nodes
 92**1b 127.0.0.1:7000@17000 master - 0 1564994278000 1 connected 0-5460
 35**ea 127.0.0.1:7004@17004 myself,master - 0 1564994277000 7 connected 10923-16383
 # 此时7004以及编程master节点
+```
+
+* 关闭redis节点
+
+```shell
+# 可以直接在redis客户端关闭节点
+./redis-cli -c -p 7000
+127.0.0.1:7000> shutdown
+```
+
+或者编写脚本统一关闭所有节点
+
+```shell
+# 这里的脚本我放在和启动节点的脚本同一目录（/usr/redis-5.0.4/cluster-test/）
+[root@vm cluster-test]# vi stop_all.sh
+../src/redis-cli -p 7000 shutdown
+../src/redis-cli -p 7001 shutdown
+../src/redis-cli -p 7002 shutdown
+../src/redis-cli -p 7003 shutdown
+../src/redis-cli -p 7004 shutdown
+../src/redis-cli -p 7005 shutdown
 ```
 
 ## 二、在docker上部署

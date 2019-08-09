@@ -65,11 +65,17 @@ firewall-cmd --permanent --list-services
 
 
 
-## 3、端口情况
+## 3、其他常用指令
 
 查看端口监听情况
 
 ```shell
-netstat -anp
+netstat -anp | grep 3306
+```
+
+查看进程情况
+
+```shell
+ps -aux | grep redis
 ```
 

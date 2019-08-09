@@ -80,9 +80,12 @@ docker load > /home/java.tar.gz
 docker run -it -p 9000:8080 -p 9001:8085 --name myjava -v /home/project:/soft --privilege docker.io/java bash
 ##############
 1、-it 表示以交互的方式运行镜像，运行之后直接进入到容器内部，同过exit推出容器
+   -i: 以交互模式运行容器，-t: 为容器重新分配一个伪输入终端，通常与 -i、-t 同时使用；
    -d 以后台运行的方式
+   # 对于以后台启动的容器，可以这样进入e.g. docker exec -it haproxy bash
 2、-p 开启端口映射，将主机的端口（这里docker主机是cnetos虚拟机）：容器的端口（docker容器）
-3、-v 文件映射
+3、-v 绑定一个卷，实现文件映射
+
 ```
 
 
