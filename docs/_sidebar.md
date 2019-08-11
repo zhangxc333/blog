@@ -9,6 +9,8 @@
   * [docker安装及使用](article/docker安装及使用.md)
   * [pxc集群搭建](article/PXC集群搭建.md)
   * [docker环境下PXC集群搭建](article/docker环境下PXC集群搭建.md)
+  * [haproxy实现负载均衡](article/haproxy实现负载均衡.md)
+  * [keepalived+haproxy实现双机热备（未完成）](article/keepalived+haproxy实现双机热备（未完成）.md)
   * [mysql集群思路](article/mysql集群思路.md)
   * [redis集群部署](article/redis集群部署.md)
   * 
