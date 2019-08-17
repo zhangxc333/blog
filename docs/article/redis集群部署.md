@@ -1,6 +1,8 @@
 # redis集群部署
 
 > rdis集群中的数据库复制是通过主从同步来实现的，主节点（master）把数据分发给从节点（slava），主从同步的好处在于高可用，redis界定啊有冗余设计。
+>
+> redis中文网更新，直接看[https://redis.io](https://redis.io/)更好。
 
 ## 一、直接在centos7上部署
 
@@ -190,16 +192,27 @@ $ 127.0.0.1:7004> cluster nodes
 
 ## 二、在docker上部署
 
+* 编辑配置文件`redis.conf`
+
+```shell
+port 6379
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+appendonly yes
+```
+
 * 建立网段
 
 ```shell
-docker network create --subnet=172.19.0.0/16 net2
+docker network create --subnet=172.19.0.0/16 redis-network
 ```
 
-* 启动redis容器
+* 启动redis容器use own redis.conf[docker hub](https://hub.docker.com/_/redis)
 
 ```sehll
-docker run -it -d --name r1 -p 5001:6379 --net=net2 --ip 172.19.0.2 redis bash
+docker run -v /home/redis/redis.conf:/usr/local/etc/redis/redis.conf -p 5001:6379 --net=redis-network --ip 172.19.0.2 --name r1 -d redis \
+redis-server /usr/local/etc/redis/redis.conf
 ```
 
 * 进入容器
@@ -208,7 +221,7 @@ docker run -it -d --name r1 -p 5001:6379 --net=net2 --ip 172.19.0.2 redis bash
 docker exec -it r1 bash
 ```
 
-* 找到容器中redis执行文件`redis-cli`、`redis-server`
+* ~~找到容器中redis执行文件`redis-cli`、`redis-server~~`
 
 ```sehll
 # 在同一个文件下/usr/local/bin/
@@ -218,13 +231,13 @@ find / -name redis-server
 cp redis-server /usr/redis/
 ```
 
-* 按照前文类似的思路启动其他节点
-* 在`/usr/redis/`中新建cluster目录，并在目录下新建`redis.conf`文件
+* 按照前文类似的思路启动其他节点r2、r3、r4、r5、r6.
+
+* 创建集群
 
 ```shell
-# 在容器中如果不能使用vi指令
-apt-get update
-apt-get install vim
+redis-cli --cluster create 172.19.0.2:6379 172.19.0.3:6379 \
+172.19.0.4:6379 172.19.0.5:6379 172.19.0.6:6379 172.19.0.7:6379 \
+--cluster-replicas 1
 ```
 
-* 后续思路相同、、、

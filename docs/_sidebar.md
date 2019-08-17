@@ -13,5 +13,5 @@
   * [keepalived+haproxy实现双机热备（未完成）](article/keepalived+haproxy实现双机热备（未完成）.md)
   * [mysql集群思路](article/mysql集群思路.md)
   * [redis集群部署](article/redis集群部署.md)
-  * 
+  * [前后端分离项目部署](article/前后端分离项目部署.md)
 
