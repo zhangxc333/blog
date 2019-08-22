@@ -1,8 +1,9 @@
   * Java语言基础
     * 
   * spring框架
-    * 
-
+* 中间件
+  * [Spring默认缓存了解](article/Spring默认缓存了解.md)
+  * [Redis](article/Redis.md)
 * linux相关
   * [linux常用指令](article/linux常用指令.md)
   * [linu虚拟机固定ip](article/linu虚拟机固定ip.md)

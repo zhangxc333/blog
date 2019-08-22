@@ -1,8 +1,8 @@
 # redis集群部署
 
-> rdis集群中的数据库复制是通过主从同步来实现的，主节点（master）把数据分发给从节点（slava），主从同步的好处在于高可用，redis界定啊有冗余设计。
+> rdis集群中的数据库复制是通过主从同步来实现的，主节点（master）把数据分发给从节点（slava），主从同步的好处在于高可用，redis设计有冗余设计。
 >
-> redis中文网更新，直接看[https://redis.io](https://redis.io/)更好。
+> redis中文网更新慢，直接看[redis官网](https://redis.io/)更好。
 
 ## 一、直接在centos7上部署
 
