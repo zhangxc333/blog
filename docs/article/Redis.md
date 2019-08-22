@@ -335,5 +335,5 @@ Redis Cluster架构：节点、meet、指派槽、复制
 
 Redis Cluster特性：复制高可用、分片
 
-Redis Cluster部署：参考[redis集群部署](redis集群部署.md)
+Redis Cluster部署：参考[redis集群部署](article/redis集群部署.md)
 
