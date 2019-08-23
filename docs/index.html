@@ -10,7 +10,7 @@
   <link rel="Shortcut Icon" href="images/flower.ico" type="image/x-icon" />
 </head>
 <body>
-  <div id="app">加载中</div>
+  <div id="app">loading...</div>
   
   <script>
     window.$docsify = {
@@ -37,19 +37,33 @@
         noData: '找不到结果!',
         depth: 3
       },
-	  disqus: 'shortname'
+	  
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
   <!-- 搜索 -->
   <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/disqus.min.js"></script>
   <!-- 添加代码高亮 -->
   <script src="//unpkg.com/prismjs/components/prism-bash.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-java.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-sql.js"></script>
   <!-- 添加一键拷贝代码 -->
   <script src="//unpkg.com/docsify-copy-code"></script>  
+  
+  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: '0760839347a51d695edf',
+      clientSecret: '0bff837a57c806e07058c084748b2dbf25a08b29',
+      repo: 'zhangxc333/blog',
+      owner: 'zhangxc333',
+      admin: ['zhangxc333'],
+      // facebook-like distraction free mode
+      distractionFreeMode: false
+  })
+  </script>
   
 </body>
 </html>
