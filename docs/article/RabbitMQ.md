@@ -332,6 +332,89 @@ public class MyConsumer extends DefaultConsumer {
 }
 ```
 
+### 7、消费端ACK与重回队列机制
+
+```java
+basicNack(long deliveryTag, boolean multiple, boolean requeue);
+# true if the rejected message(s) should be requeued rather than discarded/dead-lettered
+```
+
+* MyConsumer.java
+
+```java
+public class MyConsumer extends DefaultConsumer {
+
+    @Override
+    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+        if(){
+            channel.basicNack(envelope.getDeliveryTag(), false, true);
+        } else{
+           	channel.basicAck(envelope.getDeliveryTag(), false);
+        }
+        
+    }
+}
+```
+
+### 8、TTL队列/消息
+
+TTL是Time To Live的缩写，也就是生存时间。
+
+具体有两种方式设置：
+
+* 在消息发送时可以指定过期时间
+
+```java
+AMQP.BasicProperties properties = new AMQP.BasicProperties().builder()
+    .expiration("10000")
+    .build();
+//5 发送消息
+channel.basicPublish(exchange, routingKey, properties, msg.getBytes());
+```
+
+* 在队列上设置超时时间，具体时间从消息入队列开始计算，超时自动消除
+
+```java
+//添加arguments参数
+Map<String, Object> arguments = new HashMap<>();
+arguments.put("x-dead-message-ttl", number);
+channel.queueDeclare(queueName, true, false, false, arguments);
+```
+
+### 8、死信队列
+
+> DLX，是Dead-Letter-Exchange的缩写，也就是死信队列的意思。通过在队列上添加`x-dead-letter-exchange`参数，注明该队列是死信队列。而为什么英文名命名为Dead-Letter-Exchange，个人理解是：`消息成为死信后，该队列需要将该消息分发到另外的交换机上，充当的角色相当于一个exchange。`
+
+**消息变成死信有一下集中情况：**消息被拒绝（basic.reject/basic.neck）并且requeue=false、消息TTL过期、队列达到最大长度
+
+```java
+// dlx相关参数
+String dlxExchangeName = "dlx_exchange";
+String dlxQueueName = "dlx_queue";
+String dlxRoutingKey = "dlx.#";
+// 用于处理死信的新队列
+String exchangeName = "deal_dlx_exchange";
+String queueName = "deal_dlx_queue";
+String routingKey = "#";
+
+channel.exchangeDeclare(dlxExchangeName, "topic", true);
+// 添加arguments参数
+Map<String, Object> arguments = new HashMap<>();
+arguments.put("x-dead-letter-exchange", dlxExchangeName);
+// DLX队列
+channel.queueDeclare(dlxQueueName, true, false, false, arguments);
+channel.queueBind(dlxQueueName, dlxExchangeName, dlxRoutingKey);
+
+// 新队列
+channel.exchangeDeclare(exchangeName, "topic", true);
+channel.queueDeclare(queueName, true, false, false, null);
+channel.queueBind(queueName, exchangeName, routingKey);
+```
+
+
+
+## 三、整合RabbitMQ与SpringBoot
+
 
 
 

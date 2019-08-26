@@ -9,6 +9,8 @@
 * 中间件
   * [Spring默认缓存了解](article/Spring默认缓存了解.md)
   * [Redis](article/Redis.md)
+  * [消息](article/消息.md)
+  * [RabbitMQ](article/RabbitMQ.md)
 
 
 

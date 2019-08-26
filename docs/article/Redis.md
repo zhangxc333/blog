@@ -1,6 +1,6 @@
 # Redis
 
-> 根据学习慕课网—[一站式学习Redis  从入门到高可用分布式实践](https://coding.imooc.com/class/151.html)，作者是CacheCloud开源项目、《Redis开发与运维》作者。
+> 根据学习慕课网—[一站式学习Redis  从入门到高可用分布式实践](https://coding.imooc.com/class/151.html)，老师是CacheCloud开源项目、《Redis开发与运维》作者。
 
 ## 1、Redis简介
 
@@ -49,8 +49,6 @@ count --> field对应的值
 > 特点：有序、可重复、左右对称的操作。
 >
 > 从左至右索引从0开始、从右至左从-1开始，无论怎样索引，右边大于左边
-
-所有命令以l开头
 
 增：rpush、lpush、linsert（linsert key after|before value newValue）
 
@@ -215,7 +213,7 @@ dir /opt/soft/redis/data
 
 **存在问题：**
 
-耗时、好性能：data dump to disk
+耗时、耗性能：data dump to disk
 
 不可控、丢失数据：dump没完成时，此时写入新数据出现宕机，数据丢失。
 
@@ -286,9 +284,9 @@ slave-read-only yes
 
 ### 1、Redis Sentinel failover
 
-* sentinel monitor <master-name> <ip> <redis-port> <quorum>指定监控的主节点
-* sentinel down-after-milliseconds mymaster 30000 某个sentinel对redis节点失败的“偏架”，即"主观下线"。
-* “偏见”数量大于 <quorum>时，所有sentinel达成共识，即“客观下线”
+* `sentinel monitor` master-name ip redis-port quorum指定监控的主节点
+* sentinel down-after-milliseconds mymaster 30000 某个sentinel对redis节点失败的“偏见”，即"主观下线"。
+* “偏见”数量大于 quorum时，所有sentinel达成共识，即“客观下线”
 * sentinel集群中，选举出一个领导者节点
 * sentinel领导者节点，实现故障转移，也就是选举出一个新的master节点。（1、优先级最好的slave节点。2、寻找偏移量最大——复制最完整的节点。3、选择runid最小的节点——最好启动的节点）
 
@@ -308,11 +306,11 @@ sentinels.add("192.168.36.111:26379")
 
 ## 8、Redis Cluster
 
-### 1、只是储备——数据分布
+### 1、数据分布介绍
 
 #### 1、数据分区
 
-顺序分区、哈希分区：数据分散度高，主要运用与缓存。
+顺序分区、哈希分区：数据分散度高，主要运用于缓存。
 
 #### 2、哈希分布
 
