@@ -1,6 +1,6 @@
 # Redis
 
-> 根据学习慕课网—[一站式学习Redis  从入门到高可用分布式实践](https://coding.imooc.com/class/151.html)
+> 根据学习慕课网—[一站式学习Redis  从入门到高可用分布式实践](https://coding.imooc.com/class/151.html)，作者是CacheCloud开源项目、《Redis开发与运维》作者。
 
 ## 1、Redis简介
 
@@ -127,7 +127,7 @@ sadd + sinter = social graph （共同关注）
 * minIdle：资源池确保最少空闲连接数，默认为0。
 * jmxEnabled：是否开启jmx监控，可用于监控，默认为true，建议开启
 * blockWhenExhausted：当资源池用尽后，调用者是否要等待。默认值为true，建议开启。
-* maxWaitMillis：当资源池连接用尽后，调用者的最大等待时间（单位为毫秒）。默认值为-1（表示永不超时），不建议使用默认值。
+* maxWaitMillis：blockWhenExhausted开启后，该参数有效。当资源池连接用尽后，调用者的最大等待时间（单位为毫秒）。默认值为-1（表示永不超时），不建议使用默认值。
 * testOnBorrow：像资源池借用连接时是否做连接有效检测（ping），无效连接会被移除，默认值为false，建议使用默认值。
 * testOnReturn：返回连接时。
 
@@ -284,7 +284,7 @@ slave-read-only yes
 
 > 哨兵模式：Sentinel其实就是Client和Redis之间的桥梁，所有的客户端都通过Sentinel程序获取Redis的Master服务。。**首先Sentinel是集群部署的，Client可以链接任何一个Sentinel服务所获的结果都是一致的。其次，所有的Sentinel服务都会对Redis的主从服务进行监控，当监控到Master服务无响应的时候，Sentinel内部进行仲裁，从所有的 Slave选举出一个做为新的Master。并且把其他的slave作为新的Master的Slave。**
 
-### 1、Redis Sentinel故障转移
+### 1、Redis Sentinel failover
 
 * sentinel monitor <master-name> <ip> <redis-port> <quorum>指定监控的主节点
 * sentinel down-after-milliseconds mymaster 30000 某个sentinel对redis节点失败的“偏架”，即"主观下线"。
@@ -337,3 +337,91 @@ Redis Cluster特性：复制高可用、分片
 
 Redis Cluster部署：参考[redis集群部署](article/redis集群部署.md)
 
+
+
+**smart客户端——JedisCluster**
+
+```java
+Set<HostAndPort> nodeList = new HashSet<HostAndPort>();
+nodeList.add(new HostAndPort(host, poat));
+...
+JedisCluster jedisCluster = new JedisCluster(nodeList, timeout, poolConfig);
+jedisCluster.command...
+```
+
+
+
+## 9、缓存设计
+
+* 使用场景
+  * 降低后端负载
+  * 加速请求响应
+  * 大量写合并为批量写
+* 缓存更新问题
+* 缓存粒度问题
+  * 通用性：全量属性最好
+  * 占用空间：部分属性最好
+  * 代码维护：表面上全量属性最好
+* 缓存穿透问题
+  * 返回空键值
+  * 在缓存层之上添加bloom过滤器
+* 缓存雪崩问题
+  * 保证高可用：1、机房；2、redis cluster、redis sentinel、 vip
+
+
+
+## 10、Redis云平台CacheCloud（跳过）
+
+
+
+## 11、Redis布隆过滤器
+
+> 现有50亿电话号码，如何快速判断10w个电话号码是否在其中？
+
+利用bloom过滤器，用较小的过程，实现在海量数据中准确快速的查找指定的数据。
+
+
+
+## 12、Redis开发规范
+
+### 1、key名设计
+
+* **可读性和可管理性：**以业务表为前缀，用冒号分割，例如：ugc:video:1。
+* **简洁性：**保证语义的前提下，控制key的长度降低内存消耗，如：messages --> m
+* **不要包含特殊字符：**
+
+### 2、value名设计
+
+* **解决bigkey**
+  * string类型控制在10kb以内
+  * hash、list、set、zset元素个数不要超过5000个
+  * 反例：一个包含几百万个元素的list、hash等，一个巨大的json字符串。
+* **选择合适的数据结构**
+* **过期设计**
+
+### 3、命令使用技巧
+
+1. O(N)以上的命令关注N的数量
+2. 禁用命令（如：keys、flushdb、flushall等，通过redisrename机制禁掉命令）
+3. 合理使用select：redis的多数据库较弱
+4. redis事务功能较弱，不建议使用
+5. redis集群版本在使用lua上有特殊要求
+6. 必要情况下使用monitor命令，但不要长时间使用
+
+### 4、java客户端优化
+
+#### 1、避免多个应用使用一个redis实例
+
+不相干的业务拆分，公共数据做服务化
+
+#### 2、使用连接池
+
+#### 3、连接池参数优化
+
+基本参数1：见[2、连接池参数设置](###2、连接池参数设置)
+
+基本参数2：testWhileIdle默认为false，建议使用true开启；其他资源空闲相关配置建议使用JedisPoolConfig中的配置。
+
+
+
+## 13、内存管理（跳过）
